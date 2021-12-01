@@ -20,9 +20,9 @@ class NikeShoes{
 
 final shoes=<NikeShoes>[
   NikeShoes(
-    model: 'Air Force 1 07 LV8',
-    currentPrice: 125,
-    oldPrice: 250,
+    model: 'AIR MAX 90 EZ BLACK',
+    currentPrice: 150,
+    oldPrice: 300,
     images: [ 'assets/image1.1.png',
               'assets/image1.2.png',
               'assets/image1.3.png'],
@@ -30,7 +30,7 @@ final shoes=<NikeShoes>[
     color: 0xFFF6F6F6,
   ),
   NikeShoes(
-    model: 'Air Max 270',
+    model: 'Air Max 270 GOLD',
     currentPrice: 160,
     oldPrice: 320,
     images: [ 'assets/image2.1.png',
@@ -40,23 +40,23 @@ final shoes=<NikeShoes>[
     color: 0xfffef8e3,
   ),
   NikeShoes(
-    model: 'Air Force 1 LV8',
+    model: 'Air Max 270 RED',
     currentPrice: 90,
     oldPrice: 150,
     images: [ 'assets/image3.1.png',
               'assets/image3.2.png',
               'assets/image3.3.png'],
-    modelNumber: 108,
+    modelNumber: 95,
     color: 0xfffee8e3,
   ),
   NikeShoes(
-    model: 'Team Hustle Quick 3',
-    currentPrice: 47.97,
-    oldPrice: 50,
+    model: 'Team Hustle Quick 98',
+    currentPrice: 205.97,
+    oldPrice: 300,
     images: [ 'assets/image4.1.png',
               'assets/image4.2.png',
               'assets/image4.3.png'],
-    modelNumber: 03,
+    modelNumber: 98,
     color: 0xffe3f3fe,
   ),
 ];
