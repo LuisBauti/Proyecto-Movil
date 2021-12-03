@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:proyectofinal/shoes_details.dart';
 import 'shoes.dart';
+
+
 void main() {
   runApp(MyApp());
 }
@@ -18,32 +20,32 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget{
-  final ValueNotifier<bool> notifierButtomBarVisible =ValueNotifier(true);
+class Home extends StatelessWidget {
+  final ValueNotifier<bool> notifierButtomBarVisible = ValueNotifier(true);
 
-  void _onShoesPressed(NikeShoes shoes, BuildContext context) async{
-     notifierButtomBarVisible.value=false;
-     await Navigator.maybeOf(context)!.push(
-       PageRouteBuilder(
-         pageBuilder: (context, animation1, animation2){
-           return FadeTransition(
-             opacity: animation1,
-             child: NikeShoesDetails(),
-            );
-         }),
+  void _onShoesPressed(NikeShoes shoes, BuildContext context) async {
+    notifierButtomBarVisible.value = false;
+    await Navigator.maybeOf(context)!.push(
+      PageRouteBuilder(pageBuilder: (context, animation1, animation2) {
+        return FadeTransition(
+          opacity: animation1,
+          child: NikeShoesDetails(
+            shoes: shoes,
+          ),
+        );
+      }),
     );
-    notifierButtomBarVisible.value=true;
+    notifierButtomBarVisible.value = true;
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left:20.0, top: 20.0,right: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
@@ -54,13 +56,13 @@ class Home extends StatelessWidget{
                 Expanded(
                   child: ListView.builder(
                     itemCount: shoes.length,
-                    itemBuilder: (context, index){
-                    final shoesItem = shoes[index]; 
-                    return NikeShoesItem(
-                      shoesItem: shoesItem,
-                      onTap: (){
-                        _onShoesPressed(shoesItem, context);
-                      },
+                    itemBuilder: (context, index) {
+                      final shoesItem = shoes[index];
+                      return NikeShoesItem(
+                        shoesItem: shoesItem,
+                        onTap: () {
+                          _onShoesPressed(shoesItem, context);
+                        },
                       );
                     },
                   ),
@@ -69,46 +71,45 @@ class Home extends StatelessWidget{
             ),
           ),
           ValueListenableBuilder<bool>(
-            valueListenable: notifierButtomBarVisible,
-            child: Container(
-                  color: Colors.white.withOpacity(0.7),
-                  child: Row(
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: <Widget>[
-                      Expanded(
-                        child: Icon(Icons.home),
-                      ),
-                       Expanded(
-                        child: Icon(Icons.search),
-                      ),
-                       Expanded(
-                        child: Icon(Icons.favorite_border),
-                      ),
-                       Expanded(
-                        child: Icon(Icons.shopping_cart),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: CircleAvatar(
-                            radius: 13,
-                            backgroundImage: AssetImage('assets/usuario.png'),
-                          ),
+              valueListenable: notifierButtomBarVisible,
+              child: Container(
+                color: Colors.white.withOpacity(0.7),
+                child: Row(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.home),
+                    ),
+                    Expanded(
+                      child: Icon(Icons.search),
+                    ),
+                    Expanded(
+                      child: Icon(Icons.favorite_border),
+                    ),
+                    Expanded(
+                      child: Icon(Icons.shopping_cart),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: CircleAvatar(
+                          radius: 13,
+                          backgroundImage: AssetImage('assets/usuario.png'),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-            builder: (context, value , child) {
-              return AnimatedPositioned(
-                duration: const Duration(milliseconds: 200),
-                left: 0,
-                right: 0,
-                bottom: value ? 0.0 : -kToolbarHeight,
-                height: kToolbarHeight,
-                child: child!,
-              );
-            }
-          ),
+              ),
+              builder: (context, value, child) {
+                return AnimatedPositioned(
+                  duration: const Duration(milliseconds: 200),
+                  left: 0,
+                  right: 0,
+                  bottom: value ? 0.0 : -kToolbarHeight,
+                  height: kToolbarHeight,
+                  child: child!,
+                );
+              }),
         ],
       ),
     );
@@ -116,60 +117,45 @@ class Home extends StatelessWidget{
 }
 
 class NikeShoesItem extends StatelessWidget {
-  final NikeShoes ? shoesItem;
-  final VoidCallback ? onTap;
+  final NikeShoes? shoesItem;
+  final VoidCallback? onTap;
 
-  const NikeShoesItem({
-    Key? key, 
-    this.shoesItem,
-    this.onTap 
-    }) : super(key: key);
-
+  const NikeShoesItem({Key? key, this.shoesItem, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     const itemHeight = 300.0;
     return InkWell(
       onTap: onTap,
-        child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15.0),      
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15.0),
         child: SizedBox(
           height: itemHeight,
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
               Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: Color(shoesItem!.color!),                ),
-                    
-                ),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                   height: itemHeight *0.6,
-                  child: FittedBox(
-                    child: Text(
-                      shoesItem!.modelNumber!.toString(),
-                      style: TextStyle(
-                        color:  Colors.black.withOpacity(0.05),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                )
-              ),
+                child: Hero(
+                  tag: 'background_${shoesItem!.model}',
+                  child: Container(
+                    decoration: BoxDecoration                borderRadius: BorderRadius.circular(15.0)                color: Color(shoesItem!.color!)              )            )          )        )        Align            alignment: Alignment.topCenter            child: Hero              tag: 'number_${shoesItem!.model}'              child: SizedBox                  height: itemHeight * 0.6                  child: Material                    color: Colors.transparent                    child: FittedBox                      child: Text                        shoesItem!.modelNumber!.toString()                        style: TextStyle                          color: Colors.black.withOpacity(0.05),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )),
+                  )),
               Positioned(
-                top: 10,
-                left: 100,
-                height: itemHeight *0.65,
-                child: Image.asset(
-                  shoesItem!.images!.first, 
-                  fit: BoxFit.contain, 
-                ),
-              ),
+                  top: 10,
+                  left: 100,
+                  height: itemHeight * 0.65,
+                  child: Hero(
+                    tag: 'image_${shoesItem!.model}',
+                    child: Image.asset(
+                      shoesItem!.images!.first,
+                      fit: BoxFit.contain,
+                    ),
+                  )),
               // ignore: prefer_const_constructors
               Positioned(
                 bottom: 20,
@@ -192,7 +178,6 @@ class NikeShoesItem extends StatelessWidget {
                 left: 0,
                 right: 0,
                 bottom: 25,
-    
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -201,7 +186,6 @@ class NikeShoesItem extends StatelessWidget {
                       shoesItem!.model!,
                       style: TextStyle(
                         color: Colors.grey,
-                        
                       ),
                     ),
                     const SizedBox(
@@ -217,14 +201,13 @@ class NikeShoesItem extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                  
                     Text(
                       '\$${shoesItem!.currentPrice!.toInt().toString()}',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                      ), 
+                      ),
                     ),
                   ],
                 ),
