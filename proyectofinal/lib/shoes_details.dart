@@ -18,7 +18,7 @@ class NikeShoesDetails extends StatelessWidget {
         pageBuilder: (_, animation1, __) {
       return FadeTransition(
         opacity: animation1,
-      child: NikeShoppingCart(),
+      child: NikeShoppingCart(shoes: shoes,),
       );
     }));
     notifierButtonsVisible.value = true;
