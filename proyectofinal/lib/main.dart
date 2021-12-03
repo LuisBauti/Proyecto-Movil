@@ -163,6 +163,7 @@ class NikeShoesItem extends StatelessWidget {
                             ),
                           ),
                         )),
+
                   )),
               Positioned(
                   top: 10,
