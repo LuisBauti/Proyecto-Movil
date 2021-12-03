@@ -136,9 +136,28 @@ class NikeShoesItem extends StatelessWidget {
             children: <Widget>[
               Positioned.fill(
                 child: Hero(
-                  tag: 'background_${shoesItem!.model}',
+                  tag: 'background_${shoesItem?.model}',
                   child: Container(
-                    decoration: BoxDecoration                borderRadius: BorderRadius.circular(15.0)                color: Color(shoesItem!.color!)              )            )          )        )        Align            alignment: Alignment.topCenter            child: Hero              tag: 'number_${shoesItem!.model}'              child: SizedBox                  height: itemHeight * 0.6                  child: Material                    color: Colors.transparent                    child: FittedBox                      child: Text                        shoesItem!.modelNumber!.toString()                        style: TextStyle                          color: Colors.black.withOpacity(0.05),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      color: Color(shoesItem!.color!),
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                  alignment: Alignment.topCenter,
+                  child: Hero(
+                    tag: 'number_${shoesItem?.model}',
+                    child: SizedBox(
+                        height: itemHeight * 0.6,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: FittedBox(
+                            child: Text(
+                              shoesItem!.modelNumber!.toString(),
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.05),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
