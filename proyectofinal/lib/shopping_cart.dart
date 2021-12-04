@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:proyectofinal/shoes.dart';
 
+const _buttonSize = 160.0;
+const _buttonCircularSize = 60.0;
+
 class NikeShoppingCart extends StatefulWidget {
   final NikeShoes shoes;
 
-  const NikeShoppingCart({Key? key, @required this.shoes}) : super(key: key);
+  const NikeShoppingCart({Key key, @required this.shoes}) : super(key: key);
 
   @override
   State<NikeShoppingCart> createState() => _NikeShoppingCartState();
@@ -12,6 +15,33 @@ class NikeShoppingCart extends StatefulWidget {
 
 class _NikeShoppingCartState extends State<NikeShoppingCart>
     with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation _animationButton1;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 3000));
+    _animationButton1 = Tween(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(
+          0.0,
+          0.2,
+        ),
+      ),
+    );
+    super.initState();
+  }
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   Widget _builderPanel() {
     final size = MediaQuery.of(context).size;
     return TweenAnimationBuilder<double>(
@@ -79,45 +109,89 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
     final size = MediaQuery.of(context).size;
     return Material(
       color: Colors.transparent,
-      child: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                color: Colors.black87,
-              ),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Stack(
+      child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return Stack(
+              fit: StackFit.expand,
               children: <Widget>[
-                _builderPanel(),
-                Container(
-                  decoration: BoxDecoration(),
-                  child: Row(
+                Positioned.fill(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Stack(
                     children: <Widget>[
-                      Icon(
-                        Icons.shopping_cart,
+                      _builderPanel(),
+                      Positioned(
+                        bottom: 40,
+                        left: size.width / 2 - _buttonSize / 2,
+                        child: TweenAnimationBuilder(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeIn,
+                          tween: Tween(begin: 1.0, end: 0.0),
+                          builder: (context, value, child) {
+                            return Transform.translate(
+                              offset: Offset(
+                                0.0,
+                                value * size.height * 0.6,
+                              ),
+                              child: child,
+                            );
+                          },
+                          child: InkWell(
+                            onTap: () {
+                              _controller.forward();
+                            },
+                            child: Container(
+                              width:
+                                  (_buttonSize * _animationButton1.value).clamp(
+                                _buttonCircularSize,
+                                _buttonSize,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.shopping_cart,
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'AGREGAR AL CARRITO',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text('ADD TO CART')
                     ],
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
+            );
+          }),
     );
   }
 }
