@@ -136,11 +136,11 @@ class NikeShoesItem extends StatelessWidget {
             children: <Widget>[
               Positioned.fill(
                 child: Hero(
-                  tag: 'background_${shoesItem?.model}',
+                  tag: 'background_${shoesItem!.model}',
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
-                      color: Color(shoesItem!.color!),
+                      color: Color(shoesItem!.color),
                     ),
                   ),
                 ),
@@ -148,7 +148,7 @@ class NikeShoesItem extends StatelessWidget {
               Align(
                   alignment: Alignment.topCenter,
                   child: Hero(
-                    tag: 'number_${shoesItem?.model}',
+                    tag: 'number_${shoesItem!.model}',
                     child: SizedBox(
                         height: itemHeight * 0.6,
                         child: Material(
@@ -203,7 +203,7 @@ class NikeShoesItem extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(
-                      shoesItem!.model!,
+                      shoesItem!.model,
                       style: TextStyle(
                         color: Colors.grey,
                       ),
@@ -212,7 +212,7 @@ class NikeShoesItem extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      '\$${shoesItem!.oldPrice!.toInt().toString()}',
+                      '\$${shoesItem!.oldPrice.toInt().toString()}',
                       style: TextStyle(
                         color: Colors.red,
                         decoration: TextDecoration.lineThrough,
@@ -222,7 +222,7 @@ class NikeShoesItem extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      '\$${shoesItem!.currentPrice!.toInt().toString()}',
+                      '\$${shoesItem!.currentPrice.toInt().toString()}',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,

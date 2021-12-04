@@ -1,7 +1,9 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:proyectofinal/shoes.dart';
 
-const _buttonSize = 160.0;
+const _buttonSize = 220.0;
 const _buttonCircularSize = 60.0;
 
 class NikeShoppingCart extends StatefulWidget {
@@ -135,8 +137,8 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                       Positioned(
                         bottom: 40,
                         left: size.width / 2 - _buttonSize / 2,
-                        child: TweenAnimationBuilder(
-                          duration: const Duration(milliseconds: 400),
+                        child: TweenAnimationBuilder<double>(
+                          duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn,
                           tween: Tween(begin: 1.0, end: 0.0),
                           builder: (context, value, child) {
@@ -169,6 +171,7 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                                   children: <Widget>[
                                     Icon(
                                       Icons.shopping_cart,
+                                      color: Colors.white,
                                     ),
                                     const SizedBox(
                                       width: 10,

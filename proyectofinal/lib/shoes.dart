@@ -4,14 +4,14 @@ class NikeShoes {
   final double currentPrice;
   final List<String>? images;
   final int? modelNumber;
-  final int? color;
+  final int color;
   NikeShoes(
       {required this.model,
       required this.oldPrice,
       required this.currentPrice,
       this.images,
       this.modelNumber,
-      this.color});
+      required this.color});
 }
 
 final shoes = <NikeShoes>[
