@@ -5,9 +5,9 @@ const _buttonSize = 160.0;
 const _buttonCircularSize = 60.0;
 
 class NikeShoppingCart extends StatefulWidget {
-  final NikeShoes shoes;
+  final NikeShoes? shoes;
 
-  const NikeShoppingCart({Key key, @required this.shoes}) : super(key: key);
+  const NikeShoppingCart({Key? key, @required this.shoes}) : super(key: key);
 
   @override
   State<NikeShoppingCart> createState() => _NikeShoppingCartState();
@@ -15,8 +15,8 @@ class NikeShoppingCart extends StatefulWidget {
 
 class _NikeShoppingCartState extends State<NikeShoppingCart>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _animationButton1;
+  AnimationController? _controller;
+  Animation? _animationButton1;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
       end: 0.0,
     ).animate(
       CurvedAnimation(
-        parent: _controller,
+        parent: _controller!,
         curve: Interval(
           0.0,
           0.2,
@@ -38,7 +38,7 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
   }
 
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -72,7 +72,7 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
-                    widget.shoes.images.first,
+                    widget.shoes!.images!.first,
                     height: 120,
                   ),
                   const SizedBox(
@@ -81,13 +81,13 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                   Column(
                     children: <Widget>[
                       Text(
-                        widget.shoes.model,
+                        widget.shoes!.model,
                         style: TextStyle(
                           fontSize: 10,
                         ),
                       ),
                       Text(
-                        '\$${widget.shoes.currentPrice.toInt().toString()}',
+                        '\$${widget.shoes!.currentPrice.toInt().toString()}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
@@ -110,7 +110,7 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
     return Material(
       color: Colors.transparent,
       child: AnimatedBuilder(
-          animation: _controller,
+          animation: _controller!,
           builder: (context, child) {
             return Stack(
               fit: StackFit.expand,
@@ -150,11 +150,11 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                           },
                           child: InkWell(
                             onTap: () {
-                              _controller.forward();
+                              _controller!.forward();
                             },
                             child: Container(
-                              width:
-                                  (_buttonSize * _animationButton1.value).clamp(
+                              width: (_buttonSize * _animationButton1!.value)
+                                  .clamp(
                                 _buttonCircularSize,
                                 _buttonSize,
                               ),
