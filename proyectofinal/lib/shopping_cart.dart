@@ -1,10 +1,16 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+//@Dart=2.9
+
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:proyectofinal/shoes.dart';
 
-const _buttonSize = 220.0;
+const _buttonSizeWidth = 250.0;
+const _buttonSizeHeight = 60.0;
 const _buttonCircularSize = 60.0;
+const _finalImageSize = 30.0;
+const _imageSize = 120.0;
 
 class NikeShoppingCart extends StatefulWidget {
   final NikeShoes? shoes;
@@ -18,13 +24,13 @@ class NikeShoppingCart extends StatefulWidget {
 class _NikeShoppingCartState extends State<NikeShoppingCart>
     with SingleTickerProviderStateMixin {
   AnimationController? _controller;
-  Animation? _animationButton1;
+  Animation? _animationResize;
 
   @override
   void initState() {
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 3000));
-    _animationButton1 = Tween(
+    _animationResize = Tween(
       begin: 1.0,
       end: 0.0,
     ).animate(
@@ -46,6 +52,8 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
 
   Widget _builderPanel() {
     final size = MediaQuery.of(context).size;
+    final currentImageSize = (_imageSize * _animationResize!.value)
+        .clamp(_finalImageSize, _imageSize);
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeIn,
@@ -60,43 +68,54 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
         );
       },
       child: Container(
-        height: size.height * 0.6,
+        height: (size.height * 0.6 * _animationResize!.value)
+            .clamp(_buttonCircularSize, size.height * 0.6),
+        width: (size.width * _animationResize!.value)
+            .clamp(_buttonCircularSize, size.width),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+              bottomLeft: _animationResize!.value == 1 ? Radius.circular(0) : Radius.circular(30),
+              bottomRight: _animationResize!.value == 1 ? Radius.circular(0) : Radius.circular(30)
+              ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: _animationResize!.value == 1 ? MainAxisAlignment.start : MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
                     widget.shoes!.images!.first,
-                    height: 120,
+                    height: currentImageSize,
                   ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        widget.shoes!.model,
-                        style: TextStyle(
-                          fontSize: 10,
+                  if (_animationResize!.value == 1) ...[
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          widget.shoes!.model,
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '\$${widget.shoes!.currentPrice.toInt().toString()}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                        Text(
+                          '\$${widget.shoes!.currentPrice.toInt().toString()}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ]
                 ],
               ),
             ),
@@ -114,6 +133,14 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
       child: AnimatedBuilder(
           animation: _controller!,
           builder: (context, child) {
+            final buttonSizeWidth =
+                (_buttonSizeWidth * _animationResize!.value).clamp(
+              _buttonCircularSize,
+              _buttonSizeWidth,
+            );
+
+            final panelSizeWidth = (size.width * _animationResize!.value)
+                .clamp(_buttonCircularSize, size.width);
             return Stack(
               fit: StackFit.expand,
               children: <Widget>[
@@ -127,16 +154,18 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                     ),
                   ),
                 ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
+                Positioned.fill(
                   child: Stack(
                     children: <Widget>[
-                      _builderPanel(),
+                      Positioned(
+                        top: size.height * 0.4,
+                        width: panelSizeWidth,
+                        left: size.width / 2 - panelSizeWidth / 2,
+                        child: _builderPanel(),
+                      ),
                       Positioned(
                         bottom: 40,
-                        left: size.width / 2 - _buttonSize / 2,
+                        left: size.width / 2 - buttonSizeWidth / 2,
                         child: TweenAnimationBuilder<double>(
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn,
@@ -155,10 +184,12 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                               _controller!.forward();
                             },
                             child: Container(
-                              width: (_buttonSize * _animationButton1!.value)
-                                  .clamp(
+                              width: buttonSizeWidth,
+                              height:
+                                  (_buttonSizeHeight * _animationResize!.value)
+                                      .clamp(
                                 _buttonCircularSize,
-                                _buttonSize,
+                                _buttonSizeHeight,
                               ),
                               decoration: BoxDecoration(
                                 color: Colors.black,
@@ -166,22 +197,31 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                                     BorderRadius.all(Radius.circular(30)),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12.0),
                                 child: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
-                                    Icon(
-                                      Icons.shopping_cart,
-                                      color: Colors.white,
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      'AGREGAR AL CARRITO',
-                                      style: TextStyle(
+                                    Expanded(
+                                      child: Icon(
+                                        Icons.shopping_cart,
                                         color: Colors.white,
                                       ),
-                                    )
+                                    ),
+                                    if (_animationResize!.value == 1) ...[
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          'AGREGAR AL CARRITO',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                    ]
                                   ],
                                 ),
                               ),
