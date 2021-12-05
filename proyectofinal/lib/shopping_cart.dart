@@ -31,7 +31,7 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
   @override
   void initState() {
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 3000));
+        vsync: this, duration: const Duration(milliseconds: 2000));
     _animationResize = Tween(
       begin: 1.0,
       end: 0.0,
@@ -51,25 +51,32 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
       CurvedAnimation(
         parent: _controller!,
         curve: Interval(
-          0.45,
-          0.6,
+          0.25,
+          0.55,
+          curve: Curves.easeInOutQuint,
         ),
       ),
     );
 
-    _animationMovementOut = _animationMovementIn = Tween(
+    _animationMovementOut = Tween(
       begin: 0.0,
       end: 1.0,
     ).animate(
       CurvedAnimation(
         parent: _controller!,
         curve: Interval(
-          0.6,
+          0.5,
           1.0,
+          curve: Curves.elasticIn,
         ),
       ),
     );
 
+    _controller!.addStatusListener((status) {
+      if(status == AnimationStatus.completed){
+        Navigator.of(context).pop(true);
+      }
+    });
     super.initState();
   }
 
