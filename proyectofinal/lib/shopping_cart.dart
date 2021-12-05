@@ -25,6 +25,8 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
     with SingleTickerProviderStateMixin {
   AnimationController? _controller;
   Animation? _animationResize;
+  Animation? _animationMovementIn;
+  Animation? _animationMovementOut;
 
   @override
   void initState() {
@@ -42,6 +44,32 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
         ),
       ),
     );
+    _animationMovementIn = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller!,
+        curve: Interval(
+          0.45,
+          0.6,
+        ),
+      ),
+    );
+
+    _animationMovementOut = _animationMovementIn = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller!,
+        curve: Interval(
+          0.6,
+          1.0,
+        ),
+      ),
+    );
+
     super.initState();
   }
 
@@ -77,13 +105,18 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30),
-              bottomLeft: _animationResize!.value == 1 ? Radius.circular(0) : Radius.circular(30),
-              bottomRight: _animationResize!.value == 1 ? Radius.circular(0) : Radius.circular(30)
-              ),
+              bottomLeft: _animationResize!.value == 1
+                  ? Radius.circular(0)
+                  : Radius.circular(30),
+              bottomRight: _animationResize!.value == 1
+                  ? Radius.circular(0)
+                  : Radius.circular(30)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: _animationResize!.value == 1 ? MainAxisAlignment.start : MainAxisAlignment.center,
+          mainAxisAlignment: _animationResize!.value == 1
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(5.0),
@@ -157,14 +190,18 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                 Positioned.fill(
                   child: Stack(
                     children: <Widget>[
+                      if (_animationMovementIn!.value != 1)
+                        Positioned(
+                          top: size.height * 0.4 +
+                              (_animationMovementIn!.value *
+                                  size.height *
+                                  0.444),
+                          left: size.width / 2 - panelSizeWidth / 2,
+                          width: panelSizeWidth,
+                          child: _builderPanel(),
+                        ),
                       Positioned(
-                        top: size.height * 0.4,
-                        width: panelSizeWidth,
-                        left: size.width / 2 - panelSizeWidth / 2,
-                        child: _builderPanel(),
-                      ),
-                      Positioned(
-                        bottom: 40,
+                        bottom: 40.0 - (_animationMovementOut!.value * 100),
                         left: size.width / 2 - buttonSizeWidth / 2,
                         child: TweenAnimationBuilder<double>(
                           duration: const Duration(milliseconds: 500),
