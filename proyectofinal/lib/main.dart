@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyectofinal/shoes_details.dart';
 import 'shoes.dart';
+import 'app.dart';
 
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
-      home: Home(),
+      home: MyAppForm(),
     );
   }
 }
