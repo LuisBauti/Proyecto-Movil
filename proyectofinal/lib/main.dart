@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:proyectofinal/shoes_details.dart';
 import 'shoes.dart';
 import 'app.dart';
-
+import 'mainPromo.dart';
 
 void main() {
   runApp(MyApp());
@@ -82,7 +82,14 @@ class Home extends StatelessWidget {
                       child: Icon(Icons.home),
                     ),
                     Expanded(
-                      child: Icon(Icons.search),
+                      child: new IconButton(
+                          icon: Icon(Icons.access_time),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Promo() ));
+                          }),
                     ),
                     Expanded(
                       child: Icon(Icons.favorite_border),
@@ -164,7 +171,6 @@ class NikeShoesItem extends StatelessWidget {
                             ),
                           ),
                         )),
-
                   )),
               Positioned(
                   top: 10,
